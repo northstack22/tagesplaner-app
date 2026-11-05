@@ -556,3 +556,94 @@ main {
 .day-add .add-form {
   margin-bottom: 0;
 }
+
+/* ===== Monat ===== */
+.month-card {
+  padding: 8px;
+}
+
+.weekday-row,
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.weekday-row span {
+  padding: 2px 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.day {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+
+.day.is-today {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  font-weight: 700;
+}
+
+.day[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.dot {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.day[aria-pressed="true"] .dot {
+  background: var(--accent-text);
+}
+
+.delete-button {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.event-form {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.event-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.time-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.time-input {
+  width: 9em;
+  color: var(--text);
+}

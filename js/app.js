@@ -4,10 +4,12 @@ import * as store from './storage.js';
 import { toast } from './ui.js';
 import * as today from './today.js';
 import * as week from './week.js';
+import * as month from './month.js';
 
 const VIEWS = {
   today: { title: 'Heute', module: today },
   week: { title: 'Woche', module: week },
+  month: { title: 'Monat', module: month },
 };
 
 let current = 'today';

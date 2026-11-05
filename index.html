@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Erlaubt nur Dateien aus diesem Ordner und blockiert alle Netzwerkanfragen aus dem Code. -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Tagesplaner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-text">
+      <h1 id="view-title">Heute</h1>
+      <p id="view-subtitle" class="subtitle"></p>
+    </div>
+    <button id="settings-button" class="icon-button" type="button" aria-label="Datensicherung" aria-pressed="false">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+        <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>
+        <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+    </button>
+  </header>
+
+  <main>
+    <section id="view-today" class="view" aria-labelledby="view-title"></section>
+    <section id="view-week" class="view" aria-labelledby="view-title" hidden></section>
+    <section id="view-month" class="view" aria-labelledby="view-title" hidden></section>
+    <section id="view-notes" class="view" aria-labelledby="view-title" hidden></section>
+    <section id="view-backup" class="view" aria-labelledby="view-title" hidden></section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <nav class="tabbar" aria-label="Bereiche">
+    <button type="button" class="tab" data-view="today">Heute</button>
+    <button type="button" class="tab" data-view="week">Woche</button>
+    <button type="button" class="tab" data-view="month">Monat</button>
+    <button type="button" class="tab" data-view="notes">Notizen</button>
+  </nav>
+
+  <noscript>
+    <p class="noscript">Diese App braucht JavaScript.</p>
+  </noscript>
+</body>
+</html>

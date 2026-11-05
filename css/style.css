@@ -1,0 +1,217 @@
+/* ===== Farben (hell und dunkel, folgt der iPhone-Einstellung) ===== */
+:root {
+  color-scheme: light dark;
+  --bg: #f7f4ef;
+  --surface: #ffffff;
+  --text: #2f2c28;
+  --muted: #736b62;
+  --line: #e4ded4;
+  --accent: #4f7d6d;
+  --accent-text: #ffffff;
+  --accent-soft: #e2ece7;
+  --focus: #3d6a5b;
+  --radius: 14px;
+  --tabbar-h: 62px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1b1a18;
+    --surface: #252421;
+    --text: #ece7df;
+    --muted: #a69e93;
+    --line: #3a3732;
+    --accent: #8db8a7;
+    --accent-text: #15201c;
+    --accent-soft: #2c3934;
+    --focus: #a9d0c1;
+  }
+}
+
+/* ===== Grundlagen ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.45;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ===== Kopfzeile ===== */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 14px) 20px 12px;
+  background: var(--bg);
+}
+
+.topbar h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  min-height: 1.45em;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+}
+
+.icon-button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+/* ===== Hauptbereich ===== */
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 4px 20px calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 32px);
+}
+
+.noscript {
+  padding: 20px;
+}
+
+/* ===== Reiter unten ===== */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 7px 8px calc(env(safe-area-inset-bottom) + 7px);
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+
+.tab {
+  flex: 1;
+  max-width: 150px;
+  min-height: 48px;
+  margin: 0 2px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.tab[aria-current="page"] {
+  background: var(--accent-soft);
+  color: var(--text);
+  font-weight: 650;
+}
+
+/* ===== Kurze Meldung unten ===== */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  min-height: 48px;
+  padding: 6px 6px 6px 18px;
+  transform: translateX(-50%);
+  border-radius: var(--radius);
+  background: var(--text);
+  color: var(--bg);
+  font-size: 16px;
+}
+
+.toast button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font-weight: 650;
+  text-decoration: underline;
+}

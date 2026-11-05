@@ -3,9 +3,11 @@
 import * as store from './storage.js';
 import { toast } from './ui.js';
 import * as today from './today.js';
+import * as week from './week.js';
 
 const VIEWS = {
   today: { title: 'Heute', module: today },
+  week: { title: 'Woche', module: week },
 };
 
 let current = 'today';

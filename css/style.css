@@ -450,3 +450,109 @@ main {
   flex: 1;
   overflow-wrap: anywhere;
 }
+
+/* ===== Blättern (Woche, Monat) ===== */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.pager-title {
+  flex: 1;
+  font-size: 18px;
+  font-weight: 650;
+  text-align: center;
+}
+
+.pager-button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.pager-extra {
+  display: flex;
+  justify-content: center;
+  min-height: 0;
+  margin-bottom: 12px;
+}
+
+/* ===== Woche ===== */
+.day-card {
+  margin-bottom: 12px;
+  padding: 12px 14px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.day-card.is-today {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.day-card.is-past .day-title {
+  color: var(--muted);
+}
+
+.day-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 2px;
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.day-date {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.badge {
+  margin-left: auto;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.day-card .task-list {
+  margin-left: -10px;
+}
+
+.event-list.compact .event {
+  min-height: 36px;
+  border-bottom: 0;
+}
+
+.day-empty {
+  padding: 4px 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.add-link {
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.day-add {
+  padding: 6px 0 8px;
+}
+
+.day-add .add-form {
+  margin-bottom: 0;
+}

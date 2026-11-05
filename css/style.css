@@ -647,3 +647,22 @@ main {
   width: 9em;
   color: var(--text);
 }
+
+/* ===== Notizen ===== */
+.notes-area {
+  display: block;
+  width: 100%;
+  min-height: calc(100vh - 260px);
+  min-height: calc(100dvh - 260px);
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 17px;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.notes-area::placeholder {
+  color: var(--muted);
+}

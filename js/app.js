@@ -5,11 +5,13 @@ import { toast } from './ui.js';
 import * as today from './today.js';
 import * as week from './week.js';
 import * as month from './month.js';
+import * as notes from './notes.js';
 
 const VIEWS = {
   today: { title: 'Heute', module: today },
   week: { title: 'Woche', module: week },
   month: { title: 'Monat', module: month },
+  notes: { title: 'Notizen', module: notes },
 };
 
 let current = 'today';

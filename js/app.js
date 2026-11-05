@@ -68,3 +68,11 @@ store.onSaveError(() => {
 });
 
 show('today');
+
+// Offline-Betrieb: App-Dateien im Hintergrund speichern (siehe sw.js).
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+// Den Browser bitten, die Daten dauerhaft aufzubewahren.
+navigator.storage?.persist?.().catch(() => {});

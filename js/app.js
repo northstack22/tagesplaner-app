@@ -6,12 +6,14 @@ import * as today from './today.js';
 import * as week from './week.js';
 import * as month from './month.js';
 import * as notes from './notes.js';
+import * as backup from './backup.js';
 
 const VIEWS = {
   today: { title: 'Heute', module: today },
   week: { title: 'Woche', module: week },
   month: { title: 'Monat', module: month },
   notes: { title: 'Notizen', module: notes },
+  backup: { title: 'Datensicherung', module: backup },
 };
 
 let current = 'today';
@@ -22,6 +24,8 @@ const ctx = {
   setSubtitle: (text) => {
     subtitle.textContent = text;
   },
+  // Erinnerung an die Sicherung oben in „Heute“.
+  renderExtra: (container) => backup.renderReminder(container, () => today.render()),
 };
 
 for (const [name, view] of Object.entries(VIEWS)) {

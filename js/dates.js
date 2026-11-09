@@ -40,6 +40,17 @@ export function startOfWeek(key) {
   return toKey(d);
 }
 
+// Wochentag als Zahl: 1 = Montag … 7 = Sonntag.
+export function isoWeekday(key) {
+  return ((fromKey(key).getDay() + 6) % 7) + 1;
+}
+
+// Aktuelle Uhrzeit als "HH:MM".
+export function nowTime() {
+  const d = new Date();
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 // Kalenderwoche nach deutscher Zählung (ISO 8601).
 export function weekNumber(key) {
   const d = fromKey(key);
@@ -64,3 +75,4 @@ export const weekdayName = (key) => WEEKDAY.format(fromKey(key)); // Donnerstag
 export const monthTitle = (year, month) => MONTH_YEAR.format(new Date(year, month, 1)); // November 2026
 
 export const WEEKDAYS_SHORT = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+export const WEEKDAYS_LONG = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];

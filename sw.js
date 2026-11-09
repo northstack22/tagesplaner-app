@@ -4,7 +4,7 @@
 // WICHTIG: Bei jeder Änderung an der App die VERSION erhöhen.
 // Nur dann lädt das iPhone die neuen Dateien.
 
-const VERSION = '1';
+const VERSION = '2';
 const CACHE = `tagesplaner-${VERSION}`;
 
 const FILES = [
@@ -20,6 +20,10 @@ const FILES = [
   './js/month.js',
   './js/notes.js',
   './js/backup.js',
+  './js/icons.js',
+  './js/lists.js',
+  './js/template.js',
+  './js/forest.js',
   './manifest.webmanifest',
   './icons/icon-180.png',
   './icons/icon-192.png',

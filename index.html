@@ -37,9 +37,14 @@
     <section id="view-today" class="view" aria-labelledby="view-title"></section>
     <section id="view-week" class="view" aria-labelledby="view-title" hidden></section>
     <section id="view-month" class="view" aria-labelledby="view-title" hidden></section>
+    <section id="view-lists" class="view" aria-labelledby="view-title" hidden></section>
     <section id="view-notes" class="view" aria-labelledby="view-title" hidden></section>
     <section id="view-backup" class="view" aria-labelledby="view-title" hidden></section>
+    <section id="view-template" class="view" aria-labelledby="view-title" hidden></section>
   </main>
+
+  <!-- Wochenplan als Spalten, sichtbar wenn das iPhone quer gehalten wird -->
+  <div id="landscape" class="landscape"></div>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
@@ -47,6 +52,7 @@
     <button type="button" class="tab" data-view="today">Heute</button>
     <button type="button" class="tab" data-view="week">Woche</button>
     <button type="button" class="tab" data-view="month">Monat</button>
+    <button type="button" class="tab" data-view="lists">Listen</button>
     <button type="button" class="tab" data-view="notes">Notizen</button>
   </nav>
 

@@ -5,12 +5,17 @@ Alle Daten bleiben lokal auf dem Gerät.
 
 ## Funktionen
 
-- **Heute:** Aufgaben des Tages zum Abhaken. Offene Aufgaben von gestern erscheinen oben und lassen sich übernehmen oder weglassen.
-- **Woche:** sieben Tage mit Terminen und Aufgaben. Aufgaben können direkt für einen anderen Tag eingetragen werden.
+- **Heute:** der Tag als Zeitplan – Uhrzeit von–bis, Symbol, Kreis zum Abhaken. Der Block, der gerade dran ist, wird sanft hervorgehoben. Offene, selbst eingetragene Aufgaben von gestern erscheinen oben und lassen sich übernehmen oder weglassen. Unten die täglichen Routinen.
+- **Woche:** sieben kompakte Tageskarten, Tipp auf einen Tag öffnet ihn groß. Oben die wöchentlichen Aufgaben.
+- **Querformat:** iPhone in „Heute“ oder „Woche“ quer halten zeigt die Woche als Spalten (Mo–Fr, Sa/So wenn etwas geplant ist). Dafür muss die Bildschirm-Drehsperre aus sein.
+- **Wochenvorlage** (Woche → „Wochenvorlage bearbeiten“): Standard-Blöcke pro Wochentag, mit „auf andere Tage kopieren“. Jeder Tag wird automatisch daraus befüllt. Änderungen an der Vorlage gelten für alle Tage, an denen noch nichts abgehakt oder geändert wurde. Routine-Blöcke landen nicht in „Von gestern“.
 - **Monat:** Kalender für wichtige Termine (Uhrzeit freiwillig).
+- **Listen:** tägliche Routinen (setzen sich jeden Morgen zurück), wöchentliche Aufgaben (jeden Montag) und eine langfristige Liste.
 - **Notizen:** ein Zettel, der automatisch speichert.
-- **Sichern:** alle Daten als Datei sichern und wiederherstellen. Nach 14 Tagen ohne Sicherung erscheint eine ruhige Erinnerung.
-- Funktioniert **offline**, heller und dunkler Modus folgen dem iPhone.
+- **Sichern:** alle Daten als Datei sichern und wiederherstellen. Nach 14 Tagen ohne Sicherung erscheint eine ruhige Erinnerung. Alte Sicherungsdateien lassen sich weiterhin einlesen.
+- Symbole werden passend zum Text automatisch gewählt und lassen sich beim Bearbeiten ändern.
+- Funktioniert **offline**, heller und dunkler Modus folgen dem iPhone. Dezenter Waldrahmen, alle Zeichnungen sind selbst erstellt.
+- Abgehakte Routine-Blöcke aus der Vorlage, die älter als gut ein Jahr sind, werden automatisch aufgeräumt, damit der Speicher nicht vollläuft. Selbst eingetragene Aufgaben bleiben.
 
 ## Datenschutz und Sicherheit
 
@@ -64,7 +69,8 @@ Nur dann lädt das iPhone beim nächsten Öffnen die neuen Dateien. Die Daten bl
 | `js/storage.js` | Speichern im Browser, Prüfung von Daten |
 | `js/dates.js` | Datumshilfen |
 | `js/ui.js` | Bausteine für die Oberfläche |
-| `js/today.js`, `week.js`, `month.js`, `notes.js`, `backup.js` | die einzelnen Ansichten |
+| `js/today.js`, `week.js`, `month.js`, `lists.js`, `notes.js`, `backup.js`, `template.js` | die einzelnen Ansichten |
+| `js/icons.js`, `js/forest.js` | selbst gezeichnete Symbole und Waldrahmen |
 | `sw.js` | Offline-Betrieb |
 | `manifest.webmanifest`, `icons/` | App-Name und Icons |
 | `tools/make_icons.py` | erzeugt die Icons neu: `python3 tools/make_icons.py` |

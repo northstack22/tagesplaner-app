@@ -74,11 +74,14 @@ function readFile(file) {
 }
 
 function showPreview(data, exportedAt) {
+  const counts = store.summarize(data);
   const summary = [
-    plural(data.tasks.length, 'Aufgabe', 'Aufgaben'),
-    plural(data.events.length, 'Termin', 'Termine'),
-    data.notes.trim() ? 'Notizen' : 'keine Notizen',
-  ].join(', ');
+    plural(counts.tasks, 'Aufgabe', 'Aufgaben'),
+    plural(counts.events, 'Termin', 'Termine'),
+    counts.templateBlocks ? `Wochenvorlage mit ${plural(counts.templateBlocks, 'Block', 'Blöcken')}` : null,
+    counts.listItems ? plural(counts.listItems, 'Listeneintrag', 'Listeneinträge') : null,
+    counts.hasNotes ? 'Notizen' : 'keine Notizen',
+  ].filter(Boolean).join(', ');
 
   parts.preview.replaceChildren(el('div', { class: 'card card-soft' },
     el('h2', { class: 'section-title', text: 'Diese Sicherung wiederherstellen?' }),

@@ -1,63 +1,141 @@
-// Ansicht „Heute“: Termine des Tages, offene Aufgaben von gestern, Aufgaben zum Abhaken.
+// Ansicht „Heute“ (oder ein anderer Tag, wenn er aus der Woche geöffnet wird):
+// Zeitplan mit Symbolen zum Abhaken, Termine, offene Aufgaben von gestern
+// und unten die täglichen Routinen.
 
 import * as store from './storage.js';
-import { todayKey, addDays, formatLong, formatShort } from './dates.js';
-import { el, toast, addForm, taskRow, taskHandlers, sortTasks, plural } from './ui.js';
+import {
+  todayKey, addDays, formatLong, formatShort, formatDayMonth, weekdayName, nowTime,
+} from './dates.js';
+import { el, toast, blockRow, blockAddForm, plural } from './ui.js';
+import { renderChecklistCard } from './lists.js';
 
 let ctx;
+let viewDate = todayKey();
+let lastToday = todayKey();
 const parts = {};
 
 export function init(section, context) {
   ctx = context;
+  parts.section = section;
+  parts.toToday = el('button', {
+    type: 'button',
+    class: 'button',
+    text: 'Zu heute',
+    onclick: () => {
+      reset();
+      render();
+    },
+  });
   parts.extra = el('div');
-  parts.events = el('div');
   parts.carry = el('div');
-  parts.list = el('ul', { class: 'task-list' });
+  parts.events = el('div');
+  parts.list = el('ul', { class: 'block-list' });
   parts.status = el('p', { class: 'status-line' });
-
-  const form = addForm({
-    id: 'today-new',
+  parts.daily = el('div');
+  parts.add = blockAddForm({
+    id: 'day-new',
     placeholder: 'Neue Aufgabe für heute',
     label: 'Neue Aufgabe für heute',
-    onAdd: (text) => {
-      store.addTask(todayKey(), text);
+    onAdd: (text, start, end) => {
+      store.addTask(viewDate, text, start, end);
       renderList();
     },
   });
 
+  parts.pager = el('div', { class: 'pager day-pager' },
+      el('button', { type: 'button', class: 'icon-button pager-button', 'aria-label': 'Vorheriger Tag', text: '‹', onclick: () => go(-1) }),
+      el('div', { class: 'pager-middle' }, parts.toToday),
+      el('button', { type: 'button', class: 'icon-button pager-button', 'aria-label': 'Nächster Tag', text: '›', onclick: () => go(1) }));
+
   section.append(
+    parts.pager,
     parts.extra,
-    parts.events,
     parts.carry,
-    form,
+    parts.events,
     el('div', { class: 'card list-card' }, parts.list, parts.status),
+    el('div', { class: 'card add-card' }, parts.add),
+    parts.daily,
   );
+
+  // Einmal pro Minute „Jetzt“ aktualisieren (nicht, während etwas bearbeitet wird).
+  setInterval(() => {
+    if (document.visibilityState !== 'visible' || section.hidden) return;
+    if (section.querySelector('.edit-form')) return;
+    render();
+  }, 60000);
+}
+
+export function reset() {
+  viewDate = todayKey();
+}
+
+// Einen bestimmten Tag anzeigen (z. B. aus der Wochenansicht).
+export function showDate(date) {
+  viewDate = date;
+}
+
+export function currentDate() {
+  return viewDate;
+}
+
+function go(days) {
+  viewDate = addDays(viewDate, days);
+  render();
+  window.scrollTo(0, 0);
+}
+
+function subtitleFor(date, today) {
+  if (date === today) return formatLong(date);
+  if (date === addDays(today, 1)) return `${formatDayMonth(date)} · morgen`;
+  if (date === addDays(today, -1)) return `${formatDayMonth(date)} · gestern`;
+  return formatDayMonth(date);
 }
 
 export function render() {
-  ctx.setSubtitle(formatLong(todayKey()));
-  ctx.renderExtra?.(parts.extra);
+  const today = todayKey();
+  // Über Mitternacht offen gelassen? Dann zum neuen Tag springen.
+  if (lastToday !== today) {
+    if (viewDate === lastToday) viewDate = today;
+    lastToday = today;
+  }
+  const isToday = viewDate === today;
+  ctx.setTitle(isToday ? 'Heute' : weekdayName(viewDate));
+  ctx.setSubtitle(subtitleFor(viewDate, today));
+  // Blättern nur, wenn ein anderer Tag offen ist – „Heute“ bleibt ruhig.
+  parts.pager.hidden = isToday;
+
+  const label = isToday ? 'Neue Aufgabe für heute' : `Neue Aufgabe für ${weekdayName(viewDate)}`;
+  const input = parts.add.querySelector('input[type=text]');
+  input.placeholder = label;
+  input.setAttribute('aria-label', label);
+
+  if (isToday) ctx.renderExtra?.(parts.extra);
+  else parts.extra.replaceChildren();
+  renderCarry(isToday);
   renderEvents();
-  renderCarry();
   renderList();
+  if (isToday) renderChecklistCard(parts.daily, 'daily');
+  else parts.daily.replaceChildren();
 }
 
 function renderEvents() {
-  const events = store.eventsOn(todayKey());
+  const events = store.eventsOn(viewDate);
   if (events.length === 0) {
     parts.events.replaceChildren();
     return;
   }
   parts.events.replaceChildren(el('div', { class: 'card' },
-    el('h2', { class: 'section-title', text: 'Termine heute' }),
+    el('h2', { class: 'section-title', text: 'Termine' }),
     el('ul', { class: 'event-list' }, events.map((e) => el('li', { class: 'event' },
       el('span', { class: 'event-time', text: e.time || 'ganztags' }),
       el('span', { class: 'event-title', text: e.title }))))));
 }
 
-function renderCarry() {
+// ----- Von gestern noch offen (nur selbst eingetragene Aufgaben) -----
+
+function renderCarry(isToday) {
   const today = todayKey();
-  const open = store.openTasksBefore(today);
+  const open = isToday ? store.openTasksBefore(today) : [];
   if (open.length === 0) {
     parts.carry.replaceChildren();
     return;
@@ -84,13 +162,13 @@ function renderCarry() {
 
 function takeOver(ids) {
   store.moveTasks(ids, todayKey());
-  renderCarry();
+  renderCarry(true);
   renderList();
 }
 
 function leaveOut(ids) {
   const removed = store.deleteTasks(ids);
-  renderCarry();
+  renderCarry(true);
   toast(ids.length === 1 ? 'Weggelassen.' : `${plural(ids.length, 'Aufgabe', 'Aufgaben')} weggelassen.`, {
     label: 'Rückgängig',
     run: () => {
@@ -100,17 +178,58 @@ function leaveOut(ids) {
   });
 }
 
-function renderList() {
-  const tasks = store.tasksOn(todayKey());
-  const handlers = taskHandlers(renderList);
-  parts.list.replaceChildren(...sortTasks(tasks).map((t) => taskRow(t, handlers)));
+// ----- Zeitplan -----
 
-  const done = tasks.filter((t) => t.done).length;
-  if (tasks.length === 0) {
-    parts.status.textContent = 'Noch nichts geplant. Eine kleine Sache reicht für den Anfang.';
-  } else if (done === tasks.length) {
+const minutes = (time) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3, 5));
+
+// Welcher Block ist gerade dran? (nur heute)
+function currentItemId(items) {
+  const now = minutes(nowTime());
+  const hit = items.find((i) => {
+    if (!i.start) return false;
+    const start = minutes(i.start);
+    const end = i.end ? minutes(i.end) : start + 30;
+    return now >= start && now < end;
+  });
+  return hit ? hit.id : null;
+}
+
+function renderList() {
+  const isToday = viewDate === todayKey();
+  const items = store.dayItems(viewDate);
+  const nowId = isToday ? currentItemId(items) : null;
+
+  parts.list.replaceChildren(...items.map((item) => blockRow(item, {
+    isNow: item.id === nowId,
+    onToggle: () => {
+      store.setDone(viewDate, item.id, !item.done);
+      renderList();
+    },
+    onSave: (_, changes) => {
+      store.updateItem(viewDate, item.id, changes);
+      renderList();
+    },
+    onDelete: () => {
+      const removed = store.deleteItem(viewDate, item.id);
+      renderList();
+      toast('Gelöscht.', {
+        label: 'Rückgängig',
+        run: () => {
+          store.restoreTasks(removed);
+          renderList();
+        },
+      });
+    },
+  })));
+
+  const done = items.filter((i) => i.done).length;
+  if (items.length === 0) {
+    parts.status.textContent = isToday
+      ? 'Noch nichts geplant. Eine kleine Sache reicht für den Anfang.'
+      : 'Für diesen Tag ist noch nichts geplant.';
+  } else if (done === items.length) {
     parts.status.textContent = 'Alles erledigt. Schön!';
   } else {
-    parts.status.textContent = `${done} von ${tasks.length} erledigt`;
+    parts.status.textContent = `${done} von ${items.length} erledigt`;
   }
 }
